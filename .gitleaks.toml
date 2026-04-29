@@ -1,0 +1,68 @@
+# Gitleaks config for @gatefare/mcp.
+# Public repo from day one — extra strict on the kinds of secrets that
+# would actually be in this codebase if someone made a mistake.
+
+[extend]
+useDefault = true
+
+# ── Custom rules ────────────────────────────────────────────────────────
+
+[[rules]]
+id = "evm-private-key"
+description = "EVM private key (32 bytes hex, with or without 0x)"
+regex = '''(?i)(WALLET_PRIVATE_KEY|PRIVATE_KEY|PRIVKEY)\s*[:=]\s*["'\s]*(0x)?[a-f0-9]{64}'''
+tags = ["secret", "crypto"]
+
+[[rules]]
+id = "gatefare-pat"
+description = "Gatefare personal access token"
+regex = '''gfpat_[A-Za-z0-9_-]{20,}'''
+tags = ["secret", "gatefare"]
+
+[[rules]]
+id = "anthropic-api-key"
+description = "Anthropic API key"
+regex = '''sk-ant-[A-Za-z0-9_-]{20,}'''
+tags = ["secret", "anthropic"]
+
+[[rules]]
+id = "openai-api-key"
+description = "OpenAI API key"
+regex = '''sk-[A-Za-z0-9]{32,}'''
+tags = ["secret", "openai"]
+
+[[rules]]
+id = "npm-token"
+description = "npm access token"
+regex = '''npm_[A-Za-z0-9]{36}'''
+tags = ["secret", "npm"]
+
+# ── Allowlist ──────────────────────────────────────────────────────────
+
+[allowlist]
+description = "Known non-secret strings"
+
+paths = [
+    '''^node_modules/''',
+    '''/node_modules/''',
+    '''^dist/''',
+    '''/dist/''',
+    '''^package-lock\.json$''',
+    '''/package-lock\.json$''',
+    '''^\.gitleaks\.toml$''',
+    '''^\.gitleaksignore$''',
+    # Test fixtures intentionally use dummy keys
+    '''^tests/''',
+]
+
+regexes = [
+    # Placeholder patterns used in docs / examples
+    '''0xYOUR''',
+    '''0x_YOUR''',
+    '''0xYour''',
+    '''YOUR_[A-Z_]+_HERE''',
+    '''gfpat_YOUR''',
+    '''gfpat_test''',
+    # Dummy keys used in tests (32 a/b/c chars padding)
+    '''0x[a-c]{64}''',
+]
