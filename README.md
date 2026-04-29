@@ -188,6 +188,20 @@ async with stdio_client(server) as (r, w):
 See [`examples/`](examples/) for runnable variants: Claude Desktop, Cursor, Python,
 TypeScript, and a pure-discovery walkthrough.
 
+### Not building an AI agent? Picking the right tool
+
+If you want to **pay for x402 APIs from a backend** (no agent), use Coinbase's
+official x402 SDKs — `x402-python` (PyPI), `coinbase/x402/go`, `…/java`, or
+[`@x402/fetch`](https://www.npmjs.com/package/x402-fetch). They handle the
+payment flow; you don't need this MCP server.
+
+If you want to **browse the Gatefare catalog** from any language, hit the
+REST API directly: [`gatefare.io/api/catalog`](https://gatefare.io/api/catalog)
+([OpenAPI 3.1 spec](https://gatefare.io/openapi.json)).
+
+Full breakdown of which tool fits which use case in
+[`docs/integrations.md`](docs/integrations.md).
+
 ### Direct CLI (for debugging)
 
 ```bash

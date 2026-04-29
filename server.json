@@ -1,7 +1,7 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.gatefareio/mcp-server",
-  "description": "Gatefare — paid-API marketplace MCP. Discover, call, and publish HTTP APIs with USDC micropayments on Base via the open x402 standard. Non-custodial.",
+  "description": "Marketplace of paid HTTP APIs. USDC micropayments via x402 on Base. Non-custodial.",
   "repository": {
     "url": "https://github.com/gatefareio/mcp-server",
     "source": "github"
