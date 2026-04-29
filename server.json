@@ -1,0 +1,51 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.gatefareio/mcp-server",
+  "description": "Gatefare — paid-API marketplace MCP. Discover, call, and publish HTTP APIs with USDC micropayments on Base via the open x402 standard. Non-custodial.",
+  "repository": {
+    "url": "https://github.com/gatefareio/mcp-server",
+    "source": "github"
+  },
+  "version": "1.0.1",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@gatefare/mcp",
+      "version": "1.0.1",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "WALLET_PRIVATE_KEY",
+          "description": "EVM private key (32 bytes hex). Required for buyer tools (call_api, get_wallet_balance, estimate_cost). Stays on the user's machine.",
+          "isRequired": false,
+          "isSecret": true
+        },
+        {
+          "name": "WALLET_BUDGET_USD",
+          "description": "Optional runtime spend cap in USD; call_api throws BUDGET_EXHAUSTED when reached.",
+          "isRequired": false
+        },
+        {
+          "name": "WALLET_NETWORK",
+          "description": "Network identifier. Defaults to eip155:8453 (Base mainnet). Use eip155:84532 for Sepolia testnet.",
+          "isRequired": false,
+          "default": "eip155:8453"
+        },
+        {
+          "name": "GATEFARE_PAT",
+          "description": "Personal access token (gfpat_...) from gatefare.io/dashboard/tokens. Required for publisher tools (register_api, list_my_apis, update_api, get_revenue, distribute).",
+          "isRequired": false,
+          "isSecret": true
+        },
+        {
+          "name": "GATEFARE_BASE_URL",
+          "description": "Override the Gatefare base URL (defaults to https://gatefare.io). Useful for self-hosted deployments.",
+          "isRequired": false,
+          "default": "https://gatefare.io"
+        }
+      ]
+    }
+  ]
+}

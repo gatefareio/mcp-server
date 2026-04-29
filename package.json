@@ -1,7 +1,8 @@
 {
   "name": "@gatefare/mcp",
-  "version": "1.0.0",
-  "description": "MCP server for Gatefare x402 marketplace — discover, buy, and publish paid APIs with AI agents",
+  "mcpName": "io.github.gatefareio/mcp-server",
+  "version": "1.0.1",
+  "description": "MCP server for the Gatefare paid-API marketplace. Works with Claude Desktop, Cursor, Continue, and any MCP client. Pay per API call in USDC on Base via the open x402 standard. Non-custodial.",
   "type": "module",
   "bin": {
     "gatefare-mcp": "dist/index.js"
@@ -25,14 +26,23 @@
   },
   "keywords": [
     "mcp",
-    "gatefare",
+    "mcp-server",
+    "model-context-protocol",
+    "claude",
+    "cursor",
+    "anthropic",
+    "ai-agents",
+    "llm-tools",
     "x402",
-    "api-marketplace",
     "usdc",
     "base",
-    "ai-agent",
-    "claude",
-    "model-context-protocol"
+    "stablecoin-payments",
+    "micropayments",
+    "api-marketplace",
+    "paid-apis",
+    "web3",
+    "coinbase",
+    "gatefare"
   ],
   "author": "Gatefare <support@gatefare.io>",
   "license": "MIT",
