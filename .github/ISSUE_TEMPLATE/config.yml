@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: mailto:security@gatefare.io
+    about: Email instead — never disclose security bugs in a public issue.
+  - name: Question / how-do-I
+    url: https://github.com/gatefareio/mcp-server/discussions
+    about: For usage questions, use Discussions (not Issues).
+  - name: Gatefare marketplace bug (not the MCP server)
+    url: mailto:support@gatefare.io
+    about: For bugs in the gatefare.io API, web app, or proxy.

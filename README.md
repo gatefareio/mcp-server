@@ -1,9 +1,11 @@
 # @gatefare/mcp
 
 [![npm version](https://img.shields.io/npm/v/@gatefare/mcp.svg?color=cb3837&logo=npm)](https://www.npmjs.com/package/@gatefare/mcp)
+[![npm downloads](https://img.shields.io/npm/dm/@gatefare/mcp?color=cb3837)](https://www.npmjs.com/package/@gatefare/mcp)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/@gatefare/mcp?color=success)](https://bundlephobia.com/package/@gatefare/mcp)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 [![CI](https://github.com/gatefareio/mcp-server/actions/workflows/ci.yml/badge.svg)](https://github.com/gatefareio/mcp-server/actions/workflows/ci.yml)
-[![MCP](https://img.shields.io/badge/MCP-compatible-7C3AED?logo=anthropic)](https://modelcontextprotocol.io)
+[![MCP Registry](https://img.shields.io/badge/MCP%20Registry-listed-7C3AED?logo=anthropic)](https://registry.modelcontextprotocol.io/v0.1/servers?search=gatefareio)
 [![Base](https://img.shields.io/badge/Base-mainnet-0052FF)](https://base.org)
 
 > Give your AI agent a wallet and a marketplace.
