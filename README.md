@@ -15,6 +15,8 @@
 > — no SaaS keys, no subscriptions, no escrow. Non-custodial: signing
 > happens locally; the private key never leaves your machine.
 
+![Demo: install, list tools, real call against gatefare.io](docs/demo.gif)
+
 ```
 ┌─────────────┐                ┌──────────────┐                ┌─────────────────┐
 │ Claude /    │   MCP stdio    │ @gatefare/mcp│  HTTP + x402   │ gatefare.io     │
