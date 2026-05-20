@@ -45,12 +45,17 @@ describe("createServer — capability-driven tool registration", () => {
     expect(toolNames).toContain("gatefare.distribute");
   });
 
-  it("registers all 13 tools when both credentials present", () => {
+  it("registers all 15 tools when both credentials present (v1.1.0 adds trust pair)", () => {
     const { toolNames } = createServer({
       WALLET_PRIVATE_KEY: VALID_KEY,
       GATEFARE_PAT: "gfpat_test",
     });
-    expect(toolNames).toHaveLength(13);
+    // v1.0.x had 13. v1.1.0 adds the two trust + transparency tools
+    // (publisher_reputation + sample_response), bringing the total to
+    // 15. Both are always-available (no credentials needed).
+    expect(toolNames).toHaveLength(15);
+    expect(toolNames).toContain("gatefare.publisher_reputation");
+    expect(toolNames).toContain("gatefare.sample_response");
   });
 
   it("returns server with name and version", () => {

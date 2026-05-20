@@ -1,7 +1,7 @@
 {
   "name": "@gatefare/mcp",
   "mcpName": "io.github.gatefareio/mcp-server",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "MCP server for the Gatefare paid-API marketplace. Works with Claude Desktop, Cursor, Continue, and any MCP client. Pay per API call in USDC on Base via the open x402 standard. Non-custodial.",
   "type": "module",
   "bin": {

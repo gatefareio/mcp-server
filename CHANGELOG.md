@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-05-20
+
+### Added
+
+- `gatefare.publisher_reputation` tool — returns positive-only trust
+  badges (Established / Top contributor / Highly rated) computed by
+  the Gatefare backend on every catalog listing. Agents can call this
+  BEFORE issuing a paid call to gauge counterparty risk without
+  spending USDC. Always available (no credentials required).
+- `gatefare.sample_response` tool — returns the publisher-pasted
+  representative response. Lets the agent see the expected output
+  shape BEFORE paying. Useful in tandem with the captured-example
+  in `gatefare.get_api` to spot inconsistencies. Always available.
+- New module `src/tools/trust.ts` aggregates the above. Wired into
+  the server alongside discovery, buyer, publisher, safety modules.
+
+### Compatibility
+
+- Non-breaking. Existing v1.0.x tools and their inputs/outputs are
+  unchanged. The two additions sit at `gatefare.publisher_reputation`
+  and `gatefare.sample_response` — different names than anything
+  shipped previously.
+- Backend support shipped on gatefare.io with BACKLOG #46 (reputation)
+  and #47 (sample_response). Older listings still return null for
+  these fields, and both new tools handle that gracefully (legacy
+  rows return `reputation: null` and `provided: false`).
+
 ## [1.0.1] - 2026-04-29
 
 ### Added

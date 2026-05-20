@@ -7,6 +7,7 @@ import { registerDiscoveryTools } from "./tools/discovery.js";
 import { registerBuyerTools } from "./tools/buyer.js";
 import { registerPublisherTools } from "./tools/publisher.js";
 import { registerSafetyTools } from "./tools/safety.js";
+import { registerTrustTools } from "./tools/trust.js";
 
 interface ToolAnnotations {
   title?: string;
@@ -50,7 +51,7 @@ export function createServer(
   const client = new GatefareClient(config);
 
   const server = new McpServer(
-    { name: "@gatefare/mcp", version: "1.0.0" },
+    { name: "@gatefare/mcp", version: "1.1.0" },
     { instructions: SERVER_INSTRUCTIONS },
   );
 
@@ -60,6 +61,11 @@ export function createServer(
   if (capabilities.buyer) Object.assign(allTools, registerBuyerTools(client, config));
   if (capabilities.publisher) Object.assign(allTools, registerPublisherTools(client, config));
   Object.assign(allTools, registerSafetyTools(client));
+  // Trust + transparency tools — readonly, always available, exposes
+  // publisher reputation badges + publisher-pasted sample responses
+  // surfaced on /api/catalog/:slug. Lets an agent eyeball counterparty
+  // risk + expected output shape BEFORE making a paid call.
+  Object.assign(allTools, registerTrustTools(client));
 
   for (const [name, tool] of Object.entries(allTools)) {
     const inputSchema =
