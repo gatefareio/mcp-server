@@ -330,6 +330,17 @@ tests/
 Issues and PRs welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow,
 style guide, and how to add a new tool.
 
+## Related packages
+
+Gatefare ships three first-party packages. They share the same x402
+protocol and the same backend, so a project can mix them as needed:
+
+| Package | Where | When to use |
+|---|---|---|
+| [`@gatefare/mcp`](https://www.npmjs.com/package/@gatefare/mcp) (this one) | npm | Drop into Claude Desktop / Cursor / any MCP host to give the agent tools for catalog discovery + paid calls |
+| [`@gatefare/client`](https://www.npmjs.com/package/@gatefare/client) | npm | TypeScript / JavaScript agents that pay APIs in code, outside MCP |
+| [`gatefare`](https://pypi.org/project/gatefare/) | PyPI | Python agents (LangChain, LlamaIndex, etc.) |
+
 ## License
 
 [MIT](LICENSE) © Gatefare
