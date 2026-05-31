@@ -6,6 +6,8 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 [![CI](https://github.com/gatefareio/mcp-server/actions/workflows/ci.yml/badge.svg)](https://github.com/gatefareio/mcp-server/actions/workflows/ci.yml)
 [![MCP Registry](https://img.shields.io/badge/MCP%20Registry-listed-7C3AED?logo=anthropic)](https://registry.modelcontextprotocol.io/v0.1/servers?search=gatefareio)
+[![mcp.so](https://img.shields.io/badge/mcp.so-listed-2E7BFF)](https://mcp.so/server/gatefare)
+[![Glama](https://glama.ai/mcp/servers/gatefareio/mcp-server/badges/score.svg)](https://glama.ai/mcp/servers/gatefareio/mcp-server)
 [![Base](https://img.shields.io/badge/Base-mainnet-0052FF)](https://base.org)
 
 > Give your AI agent a wallet and a marketplace.
