@@ -1,7 +1,11 @@
 import { z } from "zod";
 import type { GatefareClient } from "../client.js";
 import type { Config } from "../config.js";
-import { executePaymentFlow, getWalletBalance } from "../x402.js";
+import {
+  executePaymentFlow,
+  getWalletBalance,
+  verifyPaxiomDeliveryReceipt,
+} from "../x402.js";
 import { GatefareError } from "../types.js";
 
 // Slug / handle / urlName must be safe to put directly into a URL path
@@ -199,12 +203,17 @@ export function registerBuyerTools(client: GatefareClient, config: Config) {
             chargedUsd = parsed;
           }
 
+          const paxiomReceipt = verifyPaxiomDeliveryReceipt(flow.response, body);
+          const payment = paxiomReceipt
+            ? { ...flow.payment, paxiomReceipt }
+            : flow.payment;
+
           return {
             value: {
               status: flow.response.status,
               headers: responseHeaders,
               body,
-              payment: flow.payment,
+              payment,
             },
             chargedUsd,
           };

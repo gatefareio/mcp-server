@@ -12,6 +12,10 @@ import {
 import { privateKeyToAccount } from "viem/accounts";
 import { base, baseSepolia } from "viem/chains";
 import { randomBytes } from "node:crypto";
+import {
+  PAXIOM_TRUSTED_PUBLIC_KEYS,
+  verifyResponseReceipt,
+} from "@paxiom/receipts";
 import { GatefareError } from "./types.js";
 import type { Config } from "./config.js";
 import type { GatefareClient } from "./client.js";
@@ -262,9 +266,39 @@ export async function signPayment(
   };
 }
 
+export interface PaxiomReceiptSummary {
+  valid: boolean;
+  trustState: string | null;
+  receiptHash: string | null;
+  summary?: string;
+}
+
 export interface PaymentFlowResult {
   response: Response;
-  payment: { paid: boolean; amount: string; receiptHeader?: string };
+  payment: {
+    paid: boolean;
+    amount: string;
+    receiptHeader?: string;
+    paxiomReceiptHeader?: string;
+    paxiomReceipt?: PaxiomReceiptSummary;
+  };
+}
+
+export function verifyPaxiomDeliveryReceipt(
+  response: Response,
+  parsedBody: unknown,
+): PaxiomReceiptSummary | undefined {
+  const check = verifyResponseReceipt(response, {
+    output: parsedBody,
+    trustedPaxiomPublicKeys: PAXIOM_TRUSTED_PUBLIC_KEYS,
+  });
+  if (!check.present) return undefined;
+  return {
+    valid: check.valid,
+    trustState: check.trustState,
+    receiptHash: check.verdict?.receiptHash ?? null,
+    summary: check.verdict?.summary ?? check.error,
+  };
 }
 
 export async function executePaymentFlow(
@@ -285,9 +319,14 @@ export async function executePaymentFlow(
   });
 
   if (initialResponse.status !== 402) {
+    const paxiomReceiptHeader = initialResponse.headers.get("X-Paxiom-Receipt") ?? undefined;
     return {
       response: initialResponse,
-      payment: { paid: false, amount: "0" },
+      payment: {
+        paid: false,
+        amount: "0",
+        ...(paxiomReceiptHeader ? { paxiomReceiptHeader } : {}),
+      },
     };
   }
 
@@ -333,12 +372,15 @@ export async function executePaymentFlow(
     );
   }
 
+  const paxiomReceiptHeader = paidResponse.headers.get("X-Paxiom-Receipt") ?? undefined;
+
   return {
     response: paidResponse,
     payment: {
       paid: true,
       amount: `${signed.amount} USDC`,
       receiptHeader: paidResponse.headers.get("X-Payment-Receipt") ?? undefined,
+      ...(paxiomReceiptHeader ? { paxiomReceiptHeader } : {}),
     },
   };
 }

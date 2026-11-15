@@ -59,6 +59,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.0",
+    "@paxiom/receipts": "^0.1.3",
     "viem": "^2.23.0",
     "zod": "^3.24.0"
   },

@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Automatic offline verification of `X-Paxiom-Receipt` (`paxiom.receipt.v0`)
+  Ed25519 delivery headers in `gatefare.call_api` via zero-dependency
+  `@paxiom/receipts`, surfacing `payment.paxiomReceipt` (`valid`,
+  `trustState`, `receiptHash`, `summary`) when present on upstream
+  responses.
+
 ## [1.1.1] - 2026-05-26
 
 ### Changed
