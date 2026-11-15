@@ -4,6 +4,7 @@
  * Content-Type defaults, and error mapping.
  */
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { generateReceiptKeyPair, issueReceipt } from "@paxiom/receipts";
 import { GatefareClient } from "../../src/client.js";
 import { parseConfig } from "../../src/config.js";
 import { registerBuyerTools } from "../../src/tools/buyer.js";
@@ -192,5 +193,86 @@ describe("gatefare.call_api handler", () => {
     // (Even though this test mocks fetch and balance check needs RPC,
     //  we just verify the budget didn't go to NaN.)
     expect(true).toBe(true);
+  });
+
+  it("verifies X-Paxiom-Receipt delivery headers against the returned JSON body", async () => {
+    const config = parseConfig({ WALLET_PRIVATE_KEY: VALID_KEY });
+    const client = new GatefareClient(config);
+    const tools = registerBuyerTools(client, config);
+
+    const kp = generateReceiptKeyPair({ keyId: "seller-01" });
+    const payloadBody = { result: 42, source: "verified-seller" };
+    const { receiptHeader } = issueReceipt({
+      privateKey: kp.privateKeyPem,
+      issuer: { name: "demo-seller", keyId: "seller-01" },
+      service: {
+        name: "demo-seller",
+        resource: "https://gatefare.io/p/demo",
+        method: "GET",
+      },
+      payment: {
+        scheme: "exact",
+        network: "base",
+        asset: "USDC",
+        amountAtomic: "1000",
+        settlement: { status: "verify_only", checkedByPaxiom: false },
+      },
+      output: payloadBody,
+    });
+
+    vi.spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(mock402("1000"))
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify(payloadBody), {
+          status: 200,
+          headers: {
+            "content-type": "application/json",
+            "X-Paxiom-Receipt": receiptHeader,
+          },
+        }),
+      );
+
+    const r = await tools["gatefare.call_api"].handler({ slug: "demo" });
+    expect(r.status).toBe(200);
+    expect(r.body).toEqual(payloadBody);
+    expect(r.payment.paxiomReceiptHeader).toBe(receiptHeader);
+    expect(r.payment.paxiomReceipt?.valid).toBe(true);
+    expect(r.payment.paxiomReceipt?.trustState).toBe("verified");
+    expect(r.payment.paxiomReceipt?.receiptHash).toMatch(/^0x[0-9a-f]{64}$/);
+  });
+
+  it("flags tampered responses when body diverges from X-Paxiom-Receipt outputHash", async () => {
+    const config = parseConfig({ WALLET_PRIVATE_KEY: VALID_KEY });
+    const client = new GatefareClient(config);
+    const tools = registerBuyerTools(client, config);
+
+    const kp = generateReceiptKeyPair({ keyId: "seller-01" });
+    const { receiptHeader } = issueReceipt({
+      privateKey: kp.privateKeyPem,
+      issuer: { name: "demo-seller", keyId: "seller-01" },
+      service: {
+        name: "demo-seller",
+        resource: "https://gatefare.io/p/demo",
+        method: "GET",
+      },
+      output: { result: 42 },
+    });
+
+    vi.spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(mock402("1000"))
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ result: 999 }), {
+          status: 200,
+          headers: {
+            "content-type": "application/json",
+            "X-Paxiom-Receipt": receiptHeader,
+          },
+        }),
+      );
+
+    const r = await tools["gatefare.call_api"].handler({ slug: "demo" });
+    expect(r.status).toBe(200);
+    expect(r.payment.paxiomReceipt?.valid).toBe(false);
+    expect(r.payment.paxiomReceipt?.trustState).toBe("output_hash_mismatch");
   });
 });
